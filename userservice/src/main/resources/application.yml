@@ -1,21 +1,21 @@
 spring:
   application:
-    name: userservice
+    name: 
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/FitGenie_db
-    username: postgres
-    password: 1202sonagarvish
+    url: 
+    username: 
+    password: 
 
   jpa:
     hibernate:
-      ddl-auto: update
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: 
+    database-platform: 
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone:
 
 server:
-  port: 8080
+  port: 

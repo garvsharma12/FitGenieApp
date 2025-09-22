@@ -6,6 +6,8 @@ import com.draig.activityservice.model.Activity;
 import com.draig.activityservice.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,10 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final UserValidationService userValidationService;
+    private final KafkaTemplate<String, Activity> kafkaTemplate;
+
+    @Value("${kafka.topic.name}")
+    private String topicName;
 
     public ActivityResponse trackActivity(ActivityRequest request) {
 
@@ -34,7 +40,13 @@ public class ActivityService {
                 additionalMetrics(request.getAdditionalMetrics())
                 .build();
         Activity savedActivity = activityRepository.save(activity);
-
+        try{
+            kafkaTemplate.send(topicName, savedActivity.getUserId(), savedActivity);
+            log.info("Activity event sent to Kafka for activity id: {}", savedActivity.getId());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
         return mapToActivityResponse(savedActivity);
     }
 

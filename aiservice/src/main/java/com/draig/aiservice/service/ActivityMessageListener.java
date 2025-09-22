@@ -5,6 +5,8 @@ import com.draig.aiservice.model.Recommendation;
 import com.draig.aiservice.repository.RecommendationRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,8 +17,9 @@ public class ActivityMessageListener {
     private final ActivityAIService aiService;
     private final RecommendationRepository recommendationRepository;
 
+    @KafkaListener(topics = "${kafka.topic.name}", groupId = "activity-processor-group")
     public void processActivity(Activity activity) {
-        log.info("Received activity for processing: {}", activity.getId());
+        log.info("Received activity for processing: {}", activity.getUserId());
 
         Recommendation recommendation = aiService.generateRecommendation(activity);
         recommendationRepository.save(recommendation);

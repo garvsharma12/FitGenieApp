@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/aiservice/src/main/resources/application.yml">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" />
+              <option name="originalContent" value="spring:&#10;  application:&#10;    name: aiservice&#10;&#10;  data:&#10;    mongodb:&#10;      uri: mongodb://localhost:27017/airecommandationfitness&#10;      database: airecommandationfitness&#10;&#10;  kafka:&#10;    bootstrap-servers: localhost:9092&#10;    consumer:&#10;      group-id: activity-processor-group&#10;      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer&#10;      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer&#10;      properties:&#10;        spring.json.use.type.headers: false&#10;        spring.json.value.default.type: com.draig.aiservice.model.Activity&#10;        spring.json.trusted.packages: &quot;*&quot;&#10;&#10;eureka:&#10;  client:&#10;    serviceUrl:&#10;      defaultZone: http://localhost:8761/eureka/&#10;&#10;gemini:&#10;  api:&#10;    url: &quot;https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent&quot;&#10;    key: &quot;${AIzaSyCI19DUFod-xviH486DLj-eEAUE05lPq1E:}&quot;&#10;&#10;server:&#10;  port: 8082&#10;&#10;kafka:&#10;  topic:&#10;    name: activity-events&#10;" />
+              <option name="updatedContent" value="spring:&#10;  application:&#10;    name: aiservice&#10;&#10;  data:&#10;    mongodb:&#10;      uri: mongodb://localhost:27017/airecommandationfitness&#10;      database: airecommandationfitness&#10;&#10;  kafka:&#10;    bootstrap-servers: localhost:9092&#10;    consumer:&#10;      group-id: activity-processor-group&#10;      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer&#10;      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer&#10;      properties:&#10;        spring.json.use.type.headers: false&#10;        spring.json.value.default.type: com.draig.aiservice.model.Activity&#10;        spring.json.trusted.packages: &quot;*&quot;&#10;&#10;eureka:&#10;  client:&#10;    serviceUrl:&#10;      defaultZone: http://localhost:8761/eureka/&#10;&#10;gemini:&#10;  api:&#10;    url: &quot;https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent&quot;&#10;    key: &quot;${AIzaSyCI19DUFod-xviH486DLj-eEAUE05lPq1E:}&quot;&#10;&#10;server:&#10;  port: 8082&#10;&#10;kafka:&#10;  topic:&#10;    name: activity-events" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

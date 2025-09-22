@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.draig.aiservice.model.Activity;
 import com.draig.aiservice.model.Recommendation;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ActivityAIService {
 
     private final GeminiService geminiService;
@@ -102,9 +102,9 @@ public class ActivityAIService {
         return Recommendation.builder()
                 .activityId(activity.getId())
                 .userId(activity.getUserId())
-                .activityId(activity.getType())
+                .activityType(activity.getType())
                 .recommendation("Unable to generate detailed analysis")
-                .improvements(Collections.singletonList("Continue with your routinr"))
+                .improvements(Collections.singletonList("Continue with your routing"))
                 .suggestions(Collections.singletonList("Consider consulting an expert"))
                 .safety(Arrays.asList(
                         "Always warm up before exercise",
@@ -170,7 +170,7 @@ public class ActivityAIService {
         "analysis":{
             "overall": "Overall analysis here",
             "pace": "Pace analysis here",
-            "heartRate": "Heartrate analysis here",
+            "heartRate": "Heart rate analysis here",
             "caloriesBurned": "Calorie analysis here"
         },
         "improvements": [

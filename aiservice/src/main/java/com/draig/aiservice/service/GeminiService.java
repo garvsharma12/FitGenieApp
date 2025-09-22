@@ -1,10 +1,9 @@
 package com.draig.aiservice.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -28,12 +27,13 @@ public class GeminiService {
                         Map.of("text", question)
                 })
         });
-        String full_url = geminiApiUrl+geminiApiKey;
+        //String full_url = geminiApiUrl+geminiApiKey;
         System.out.println("requestBody is "+requestBody);
-        System.out.println("full_url is "+full_url);
+        //System.out.println("full_url is "+full_url);
         return webClient.post()
-                .uri(full_url)
+                .uri(geminiApiUrl)
                 .header("Content-Type", "application/json")
+                .header("X-goog-api-key", geminiApiKey)
                 .bodyValue(requestBody)
                 .retrieve()
                 .bodyToMono(String.class)

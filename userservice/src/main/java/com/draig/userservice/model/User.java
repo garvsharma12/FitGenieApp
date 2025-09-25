@@ -18,7 +18,10 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    private String keyCloakId;
+    @Column(unique = true)
+    private String username;
+
+    // keycloakId removed
 
     @Column(nullable = false)
     private String password;

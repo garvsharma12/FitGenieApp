@@ -1,6 +1,4 @@
 package com.draig.userservice.dto;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -16,9 +14,9 @@ public class RegisterRequest {
     @Size(min=6, message = "password must be of atleast 6 characters")
     private String password;
 
-    @JsonProperty("keycloakId")
-    private String keyCloakId;
+    // keycloakId removed
 
+    private String username;
     private String firstName;
     private String lastName;
 

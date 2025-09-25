@@ -18,6 +18,7 @@ public class ActivityController {
 
     @PostMapping
     public ResponseEntity<ActivityResponse> trackActivity(@RequestBody ActivityRequest request, @RequestHeader("X-User-ID") String userId){
+        // ensure userId is set in request if needed in service layer
         return ResponseEntity.ok(activityService.trackActivity(request));
     }
 

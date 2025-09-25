@@ -1,12 +1,17 @@
 package com.draig.aiservice.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+
 import java.util.Map;
 
 @Service
+@Slf4j
 public class GeminiService {
 
     private final WebClient webClient;
@@ -27,16 +32,25 @@ public class GeminiService {
                         Map.of("text", question)
                 })
         });
-        //String full_url = geminiApiUrl+geminiApiKey;
-        System.out.println("requestBody is "+requestBody);
-        //System.out.println("full_url is "+full_url);
-        return webClient.post()
-                .uri(geminiApiUrl)
-                .header("Content-Type", "application/json")
-                .header("X-goog-api-key", geminiApiKey)
-                .bodyValue(requestBody)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+
+        try {
+            return webClient.post()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(geminiApiUrl)
+                            .queryParam("key", geminiApiKey)
+                            .build())
+                    .header("Content-Type", "application/json")
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, response -> response.bodyToMono(String.class)
+                            .defaultIfEmpty("")
+                            .map(body -> new RuntimeException("Gemini API error (" + response.statusCode() + ") " + body))
+                    )
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (WebClientResponseException e) {
+            log.error("Gemini API call failed: status={} body={}", e.getStatusCode(), e.getResponseBodyAsString());
+            throw e;
+        }
     }
 }

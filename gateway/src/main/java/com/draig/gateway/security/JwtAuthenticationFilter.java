@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,9 @@ public class JwtAuthenticationFilter implements WebFilter {
     @Override
     public @NonNull Mono<Void> filter(@NonNull ServerWebExchange exchange, @NonNull WebFilterChain chain) {
         String path = exchange.getRequest().getPath().value();
-        boolean isOpen = path.startsWith("/api/auth/") || path.startsWith("/actuator");
+        // Allow unauthenticated access for auth endpoints, health, and CORS preflight (OPTIONS)
+        boolean isPreflight = exchange.getRequest().getMethod() == HttpMethod.OPTIONS;
+        boolean isOpen = isPreflight || path.startsWith("/api/auth/") || path.startsWith("/actuator");
         if (isOpen) {
             return chain.filter(exchange);
         }

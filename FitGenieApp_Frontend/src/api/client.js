@@ -42,3 +42,42 @@ export function getToken() {
 export function logout() {
   localStorage.removeItem('token');
 }
+
+// Decode a JWT without verifying signature (client-side use only)
+function base64UrlDecode(str) {
+  try {
+    // Replace URL-safe chars and pad
+    const base64 = str.replace(/-/g, '+').replace(/_/g, '/').padEnd(Math.ceil(str.length / 4) * 4, '=');
+    const decoded = atob(base64);
+    // Decode UTF-8
+    const bytes = Uint8Array.from(decoded, c => c.charCodeAt(0));
+    const decoder = new TextDecoder('utf-8');
+    return decoder.decode(bytes);
+  } catch (_) {
+    return null;
+  }
+}
+
+export function decodeJwt(token) {
+  if (!token) return null;
+  const parts = token.split('.');
+  if (parts.length !== 3) return null;
+  const payloadJson = base64UrlDecode(parts[1]);
+  if (!payloadJson) return null;
+  try {
+    return JSON.parse(payloadJson);
+  } catch (_) {
+    return null;
+  }
+}
+
+export function getUserIdFromToken(token) {
+  const payload = decodeJwt(token);
+  if (!payload) return null;
+  // Our backend sets subject (sub) to userId
+  return payload.sub || payload.userId || null;
+}
+
+export async function postActivity(activity, token) {
+  return apiPost('/api/activities', activity, token);
+}

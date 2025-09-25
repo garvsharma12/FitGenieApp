@@ -13,6 +13,7 @@ public class SimpleSecurityConfig {
 	@Bean
 	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http){
 		return http
+				.cors(ServerHttpSecurity.CorsSpec::disable) // Let Spring Cloud Gateway global CORS handle it
 				.csrf(ServerHttpSecurity.CsrfSpec::disable)
 				.authorizeExchange(exchange -> exchange.anyExchange().permitAll())
 				.build();

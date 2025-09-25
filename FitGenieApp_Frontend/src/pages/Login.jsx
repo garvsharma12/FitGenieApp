@@ -18,7 +18,8 @@ export default function Login(){
       setToken(token);
   navigate('/home');
     }catch(err){
-      setError(err.message || 'Login failed');
+      const msg = err?.details?.message || err?.message || 'Login failed';
+      setError(msg);
     }
   }
 

@@ -21,17 +21,7 @@ public class UserService {
     public UserResponse register(RegisterRequest request) {
 
         if (repository.existsByEmail(request.getEmail())) {
-            User existingUser = repository.findByEmail(request.getEmail());
-            UserResponse userResponse = new UserResponse();
-            userResponse.setId(existingUser.getId());
-            userResponse.setUsername(existingUser.getUsername());
-            userResponse.setPassword(existingUser.getPassword());
-            userResponse.setEmail(existingUser.getEmail());
-            userResponse.setFirstName(existingUser.getFirstName());
-            userResponse.setLastName(existingUser.getLastName());
-            userResponse.setCreatedAt(existingUser.getCreatedAt());
-            userResponse.setUpdatedAt(existingUser.getUpdatedAt());
-            return userResponse;
+            throw new IllegalArgumentException("user already exist");
         }
 
         // Optional username uniqueness check
@@ -44,10 +34,9 @@ public class UserService {
         }
 
         User user = new User();
-        user.setEmail(request.getEmail());
+    user.setEmail(request.getEmail());
     user.setUsername(request.getUsername());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
+    user.setFullName(request.getFullName());
         String raw = request.getPassword();
         if(raw != null && !raw.matches("^\\$2[aby]?\\$.*")){
             raw = encoder.encode(raw);
@@ -59,9 +48,8 @@ public class UserService {
         userResponse.setId(savedUser.getId());
         userResponse.setUsername(savedUser.getUsername());
         userResponse.setPassword(savedUser.getPassword());
-        userResponse.setEmail(savedUser.getEmail());
-        userResponse.setFirstName(savedUser.getFirstName());
-        userResponse.setLastName(savedUser.getLastName());
+    userResponse.setEmail(savedUser.getEmail());
+    userResponse.setFullName(savedUser.getFullName());
         userResponse.setCreatedAt(savedUser.getCreatedAt());
         userResponse.setUpdatedAt(savedUser.getUpdatedAt());
         return userResponse;
@@ -86,9 +74,8 @@ public class UserService {
         userResponse.setId(user.getId());
     userResponse.setUsername(user.getUsername());
         userResponse.setPassword(user.getPassword());
-        userResponse.setEmail(user.getEmail());
-        userResponse.setFirstName(user.getFirstName());
-        userResponse.setLastName(user.getLastName());
+    userResponse.setEmail(user.getEmail());
+    userResponse.setFullName(user.getFullName());
         userResponse.setCreatedAt(user.getCreatedAt());
         userResponse.setUpdatedAt(user.getUpdatedAt());
         return userResponse;

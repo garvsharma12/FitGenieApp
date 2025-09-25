@@ -16,8 +16,8 @@ public class RegisterRequest {
 
     // keycloakId removed
 
+    @NotBlank(message = "Username is required")
     private String username;
-    private String firstName;
-    private String lastName;
+    private String fullName;
 
 }

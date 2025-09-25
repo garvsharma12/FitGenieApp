@@ -6,8 +6,7 @@ export default function Signup(){
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [fullName, setFullName] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
@@ -16,11 +15,16 @@ export default function Signup(){
     e.preventDefault();
     setError(''); setSuccess('');
     try{
-      await register({ email, username, password, firstName, lastName });
+  await register({ email, username, password, fullName });
       setSuccess('Account created! You can now log in.');
       setTimeout(()=> navigate('/login'), 800);
     }catch(err){
-      setError(err.message || 'Signup failed');
+      try{
+        const parsed = JSON.parse(err.message);
+        setError(parsed.error || 'Signup failed');
+      }catch(_){
+        setError(err.message || 'Signup failed');
+      }
     }
   }
 
@@ -28,14 +32,12 @@ export default function Signup(){
     <div className="auth-container">
       <h2>FitGenie Sign up</h2>
       <form onSubmit={onSubmit} className="auth-form">
-        <label>First name</label>
-        <input value={firstName} onChange={e=>setFirstName(e.target.value)} required />
-        <label>Last name</label>
-        <input value={lastName} onChange={e=>setLastName(e.target.value)} required />
+  <label>Full name</label>
+  <input value={fullName} onChange={e=>setFullName(e.target.value)} required />
   <label>Email</label>
         <input value={email} onChange={e=>setEmail(e.target.value)} type="email" required />
-  <label>Username (optional)</label>
-  <input value={username} onChange={e=>setUsername(e.target.value)} />
+  <label>Username</label>
+  <input value={username} onChange={e=>setUsername(e.target.value)} required />
         <label>Password</label>
         <input value={password} onChange={e=>setPassword(e.target.value)} type="password" required />
         {error && <p className="error">{error}</p>}

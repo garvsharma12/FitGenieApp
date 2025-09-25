@@ -21,7 +21,7 @@ public class AuthController {
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<?> register(@RequestBody @jakarta.validation.Valid RegisterRequest request){
         // Hash password
         request.setPassword(encoder.encode(request.getPassword()));
         try {
@@ -47,7 +47,11 @@ public class AuthController {
             user = userService.findByUsername(identifier);
         }
         if(user == null || !encoder.matches(password, user.getPassword())){
-            return ResponseEntity.status(401).body(Map.of("error", "Invalid credentials"));
+            return ResponseEntity.status(401).body(Map.of(
+                    "error", "Invalid credentials",
+                    "message", "The email/username or password you entered is incorrect.",
+                    "code", "AUTH_INVALID_CREDENTIALS"
+            ));
         }
         String token = jwtService.generateToken(user.getId());
         return ResponseEntity.ok(Map.of("token", token));

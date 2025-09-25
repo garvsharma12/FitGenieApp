@@ -10,8 +10,7 @@ public class UserResponse {
     // ...existing code...
     private String email;
     private String password;
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

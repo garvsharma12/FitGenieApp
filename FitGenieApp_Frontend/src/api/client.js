@@ -10,8 +10,16 @@ export async function apiPost(path, body, token) {
     body: JSON.stringify(body),
   });
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || `Request failed: ${res.status}`);
+    let msg = `Request failed: ${res.status}`;
+    try {
+      const data = await res.json();
+      msg = data.message || data.error || msg;
+      throw Object.assign(new Error(msg), { details: data, status: res.status });
+    } catch (_) {
+      const text = await res.text();
+      if (text) msg = text;
+      throw new Error(msg);
+    }
   }
   return res.json();
 }
